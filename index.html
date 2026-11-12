@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071d45">
+<meta name="description" content="Sistem Informasi SPMB SMK Yadika Manado 2027/2028">
+<link rel="manifest" href="manifest.json">
+<title>SPMB SMK Yadika Manado 2027/2028</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <section id="authView" class="auth-shell">
+    <div class="auth-card">
+      <div class="brand-mark">Y</div>
+      <p class="eyebrow">SMK YADIKA MANADO</p>
+      <h1 id="authTitle">SPMB 2027/2028</h1>
+      <p class="muted">Sistem Penerimaan Murid Baru · Online & Offline</p>
+      <div id="setupNotice" class="notice hidden">Masuk menggunakan akun administrator yang telah disediakan.</div>
+      <form id="authForm">
+        <label>Username<input id="authUser" autocomplete="username" required placeholder="Admin"></label>
+        <label>Password<input id="authPass" type="password" autocomplete="current-password" required placeholder="Masukkan password"></label>
+        <label id="confirmWrap" class="hidden">Ulangi password<input id="authConfirm" type="password" autocomplete="new-password" placeholder="Ulangi password"></label>
+        <button class="btn primary full" id="authSubmit">Masuk</button>
+      </form>
+      <p class="tiny">Dibuat oleh <strong>Jovano Kakalang, S.Ak.</strong></p>
+      <p id="authError" class="error"></p>
+    </div>
+  </section>
+
+  <section id="mainView" class="hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="side-brand"><div class="brand-mark small">Y</div><div><strong>SPMB YADIKA</strong><small>2027/2028</small></div></div>
+      <nav id="nav">
+        <button class="nav-item active" data-page="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-item" data-page="registration"><span>＋</span> Pendaftaran</button>
+        <button class="nav-item" data-page="students"><span>♙</span> Data Pendaftar</button>
+        <button class="nav-item" data-page="verification"><span>✓</span> Verifikasi</button>
+        <button class="nav-item" data-page="reports"><span>▤</span> Laporan</button>
+        <button class="nav-item" data-page="sync"><span>⇄</span> Sinkronisasi</button>
+        <button class="nav-item" data-page="settings"><span>⚙</span> Pengaturan</button>
+        <button class="nav-item" data-page="guide"><span>ⓘ</span> Panduan</button>
+      </nav>
+      <div class="side-foot"><small>Offline-first PWA</small><small>Jovano Kakalang, S.Ak.</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuToggle" aria-label="Buka menu">☰</button>
+        <div><div class="eyebrow">SISTEM INFORMASI PENDAFTARAN</div><strong id="pageHeading">Dashboard</strong></div>
+        <div class="top-actions">
+          <span id="connectionPill" class="pill warn">● Memeriksa koneksi</span>
+          <span id="userLabel" class="user-label">Administrator</span>
+          <button id="logoutBtn" class="btn outline small-btn">Keluar</button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="page active" id="page-dashboard">
+          <div class="welcome-banner">
+            <div><p class="eyebrow gold-text">TAHUN PELAJARAN 2027/2028</p><h1>Dashboard SPMB</h1><p>Pantau seluruh proses penerimaan murid baru SMK Yadika Manado.</p></div>
+            <a class="btn gold" href="https://docs.google.com/forms/d/e/1FAIpQLSdaP5DFdI2XzRULpiorXlPnk8PwDQXgdCOM-gPvOHdLrMPv6A/viewform" target="_blank" rel="noopener">Buka Form Online ↗</a>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><span class="stat-icon blue">♙</span><div><small>Total Pendaftar</small><strong id="statTotal">0</strong></div></article>
+            <article class="stat-card"><span class="stat-icon cyan">◎</span><div><small>Pendaftaran Online</small><strong id="statOnline">0</strong></div></article>
+            <article class="stat-card"><span class="stat-icon gold">▣</span><div><small>Pendaftaran Offline</small><strong id="statOffline">0</strong></div></article>
+            <article class="stat-card"><span class="stat-icon green">✓</span><div><small>Sudah Diverifikasi</small><strong id="statVerified">0</strong></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel"><div class="panel-head"><div><h2>Pendaftar per Program Keahlian</h2><p class="muted">Dihitung dari data tersimpan di perangkat ini.</p></div></div><div id="majorChart" class="bar-list"><p class="empty">Belum ada data pendaftar.</p></div></article>
+            <article class="panel"><div class="panel-head"><div><h2>Aktivitas Terbaru</h2><p class="muted">Lima data terakhir.</p></div></div><div id="recentList" class="recent-list"><p class="empty">Belum ada aktivitas.</p></div></article>
+          </div>
+          <div class="notice info"><strong>Mode lokal aktif.</strong> Data tersimpan di perangkat ini. Sinkronisasi lintas perangkat memerlukan koneksi internet dan konfigurasi Google Apps Script pada menu Pengaturan.</div>
+        </section>
+
+        <section class="page" id="page-registration">
+          <div class="page-title"><div><h1>Formulir Pendaftaran</h1><p>Masukkan data calon peserta didik. Form ini dapat digunakan saat offline.</p></div><span class="pill info">Offline tersedia</span></div>
+          <form id="registrationForm" class="panel form-panel">
+            <input type="hidden" id="recordId">
+            <div class="form-section"><h2>1. Identitas Calon Peserta Didik</h2><div class="form-grid">
+              <label>Nama lengkap *<input id="fullName" required maxlength="100"></label>
+              <label>NISN<input id="nisn" inputmode="numeric" maxlength="20"></label>
+              <label>NIK (opsional)<input id="nik" inputmode="numeric" maxlength="20"></label>
+              <label>Jenis kelamin *<select id="gender" required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></label>
+              <label>Tempat lahir<input id="birthPlace" maxlength="60"><small>Isi sesuai tempat lahir pada dokumen resmi.</small></label>
+              <label>Tanggal lahir<input id="birthDate" type="date"><small>Pilih tanggal, bulan, dan tahun lahir.</small></label>
+              <label class="span-2">Alamat lengkap<textarea id="address" rows="2" maxlength="500"></textarea></label>
+              <label>Nomor HP/WhatsApp<input id="phone" inputmode="tel" maxlength="25"><small>Nomor aktif calon murid atau yang dapat dihubungi.</small></label>
+              <label>Email Address<input id="email" type="email" maxlength="120"><small>Alamat email aktif, jika tersedia.</small></label>
+              <label>Agama<select id="religion"><option value="">Pilih agama</option><option>Islam</option><option>Kristen</option><option>Katolik</option><option>Hindu</option><option>Buddha</option><option>Konghucu</option><option>Lainnya</option></select></label>
+            </div></div>
+            <div class="form-section"><h2>2. Sekolah Asal</h2><div class="form-grid">
+              <label>Nama SMP/MTs<input id="originSchool" maxlength="120"></label>
+              <label>Tahun lulusan<input id="gradYear" inputmode="numeric" maxlength="4" placeholder="2027"><small>Isi tahun kelulusan SMP/MTs.</small></label>
+              <label>Nomor ijazah<input id="diplomaNumber" maxlength="60"><small>Isi jika sudah memiliki ijazah.</small></label>
+            </div></div>
+            <div class="form-section"><h2>3. Data Orang Tua / Wali</h2><div class="form-grid">
+              <label>Nama ayah<input id="father" maxlength="100"></label>
+              <label>Nama ibu<input id="mother" maxlength="100"></label>
+              <label>Nama wali (jika ada)<input id="guardian" maxlength="100"></label>
+              <label>Nomor HP/WA orang tua/wali<input id="parentPhone" inputmode="tel" maxlength="25"></label>
+              <label>Nomor Kartu Keluarga<input id="familyCardNumber" inputmode="numeric" maxlength="30"></label>
+              <label>Pekerjaan orang tua<select id="parentOccupation"><option value="">Pilih pekerjaan</option><option>Ayah</option><option>Ibu</option><option>Wali</option></select><small>Pilih pihak yang menjadi sumber informasi pekerjaan/penghasilan.</small></label>
+              <label>Nominal gaji/upah per bulan<input id="parentIncome" inputmode="decimal" maxlength="40" placeholder="Contoh: 2500000"></label>
+            </div></div>
+            <div class="form-section"><h2>4. Pilihan Program Keahlian</h2><div class="form-grid">
+              <label class="span-2">Program keahlian pilihan *<select id="major" required><option value="">Pilih program keahlian</option><option>Teknik Jaringan Komputer dan Telekomunikasi (TJKT)</option><option>Akuntansi dan Keuangan Lembaga (AKL)</option><option>Manajemen Perkantoran dan Layanan Bisnis (MPLB)</option><option>Layanan Kesehatan (LK)</option><option>Teknologi Farmasi (TF)</option><option>Perhotelan</option></select></label>
+              <label class="span-2">Alasan memilih jurusan<textarea id="reason" rows="2" maxlength="1000" placeholder="Tuliskan alasan memilih program keahlian tersebut"></textarea></label>
+              <label>Sumber pendaftaran<select id="source"><option value="offline">Offline / Petugas</option><option value="online">Online / Google Form</option></select></label>
+            </div></div>
+            <div class="form-section"><h2>5. Dokumen dan Pembayaran</h2><div class="form-grid">
+              <label>Upload Kartu Keluarga (KK)<input id="fileKK" type="file" accept="image/*,.pdf"><small>Nama file akan dicatat pada spreadsheet. Upload Drive perlu konfigurasi terpisah.</small></label>
+              <label>Upload pas foto siswa (3x4)<input id="filePhoto" type="file" accept="image/*"><small>Pas foto terbaru ukuran 3x4.</small></label>
+              <label>Upload file pendukung (sertifikat)<input id="fileCertificate" type="file" accept="image/*,.pdf"><small>Jika ada, lampirkan sertifikat pendukung.</small></label>
+              <label>Keterangan pembayaran<input id="paymentNote" maxlength="250" placeholder="Contoh: Lunas / Belum bayar / Cicilan"></label>
+              <label>Bukti pembayaran<input id="filePaymentProof" type="file" accept="image/*,.pdf"><small>Nama file akan dicatat pada spreadsheet.</small></label>
+            </div><div class="check-grid">
+              <label class="check"><input type="checkbox" id="docPhoto"> Foto calon siswa diperiksa</label>
+              <label class="check"><input type="checkbox" id="docKK"> Kartu Keluarga diperiksa</label>
+              <label class="check"><input type="checkbox" id="docBirth"> Akta kelahiran diperiksa</label>
+              <label class="check"><input type="checkbox" id="docDiploma"> Ijazah / SKL diperiksa</label>
+            </div><p class="tiny muted">Untuk menjaga ukuran data dan keamanan, versi ini mengirim nama berkas ke spreadsheet. File fisik belum diunggah ke Google Drive.</p></div>
+            <div class="form-actions"><button type="button" class="btn outline" id="clearFormBtn">Bersihkan</button><button type="submit" class="btn primary">Simpan Pendaftaran</button></div>
+            <p id="formMessage" class="success"></p>
+          </form>
+        </section>
+
+        <section class="page" id="page-students">
+          <div class="page-title"><div><h1>Data Pendaftar</h1><p>Kelola, cari, dan ekspor data calon peserta didik.</p></div><button class="btn primary" id="newStudentBtn">＋ Pendaftaran Baru</button></div>
+          <div class="panel">
+            <div class="toolbar"><input id="studentSearch" placeholder="Cari nama, nomor, NISN, atau sekolah..."><select id="sourceFilter"><option value="">Semua sumber</option><option value="online">Online</option><option value="offline">Offline</option></select><select id="statusFilter"><option value="">Semua status</option><option value="Menunggu">Menunggu</option><option value="Diterima">Diterima</option><option value="Perlu Perbaikan">Perlu Perbaikan</option></select><button class="btn outline" id="exportCsvBtn">Ekspor CSV</button></div>
+            <div class="table-wrap"><table><thead><tr><th>No. Pendaftaran</th><th>Nama</th><th>Asal Sekolah</th><th>Program Keahlian</th><th>Sumber</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="studentRows"><tr><td colspan="7" class="empty">Belum ada data.</td></tr></tbody></table></div>
+            <div class="table-foot"><span id="rowCount">0 data</span><button class="btn text-btn" id="printBtn">Cetak / PDF</button></div>
+          </div>
+        </section>
+
+        <section class="page" id="page-verification">
+          <div class="page-title"><div><h1>Verifikasi Pendaftaran</h1><p>Periksa kelengkapan berkas dan tetapkan status pendaftaran.</p></div></div>
+          <div class="panel"><div class="toolbar"><input id="verifySearch" placeholder="Cari nama atau nomor pendaftaran..."></div><div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Nama</th><th>Dokumen</th><th>Status</th><th>Catatan petugas</th><th>Simpan</th></tr></thead><tbody id="verifyRows"><tr><td colspan="6" class="empty">Belum ada data.</td></tr></tbody></table></div></div>
+        </section>
+
+        <section class="page" id="page-reports">
+          <div class="page-title"><div><h1>Laporan SPMB</h1><p>Ringkasan berdasarkan data yang tersimpan di perangkat ini.</p></div><button class="btn outline" id="reportPrintBtn">Cetak / Simpan PDF</button></div>
+          <div class="stats-grid compact"><article class="stat-card"><div><small>Total pendaftar</small><strong id="reportTotal">0</strong></div></article><article class="stat-card"><div><small>Online</small><strong id="reportOnline">0</strong></div></article><article class="stat-card"><div><small>Offline</small><strong id="reportOffline">0</strong></div></article><article class="stat-card"><div><small>Diterima</small><strong id="reportAccepted">0</strong></div></article></div>
+          <div class="panel"><h2>Rekap per Program Keahlian</h2><div id="reportMajor" class="bar-list"></div></div>
+          <div class="panel"><h2>Rekap berdasarkan status</h2><div id="reportStatus" class="bar-list"></div></div>
+        </section>
+
+        <section class="page" id="page-sync">
+          <div class="page-title"><div><h1>Sinkronisasi Data</h1><p>Ambil data pendaftaran dari Google Form ke aplikasi ini.</p></div><span id="syncStatus" class="pill warn">Belum dikonfigurasi</span></div>
+          <div class="sync-grid">
+            <article class="panel"><h2>Google Form Online</h2><p class="muted">Data pendaftaran online dari Google Form dapat ditarik ke aplikasi.</p><a class="btn primary full" target="_blank" rel="noopener" href="https://docs.google.com/forms/d/e/1FAIpQLSdaP5DFdI2XzRULpiorXlPnk8PwDQXgdCOM-gPvOHdLrMPv6A/viewform">Buka Google Form ↗</a><p class="tiny muted">Respons Form harus ditautkan ke Google Sheets. Data offline akan dikirim ke tab Pendaftaran Offline pada spreadsheet yang sama.</p></article>
+            <article class="panel"><h2>Status perangkat ini</h2><div class="sync-metric"><span>Antrean offline belum terkirim</span><strong id="queueCount">0</strong></div><div class="sync-metric"><span>Total data di aplikasi</span><strong id="localCount">0</strong></div><div class="sync-metric"><span>Sinkronisasi terakhir</span><strong id="lastSync">Belum pernah</strong></div><button id="syncNowBtn" class="btn gold full">⇄ Sinkronkan Semua Data</button><p id="syncMessage" class="tiny muted"></p></article>
+          </div>
+          <div class="panel"><h2>Pengaturan koneksi</h2><label>URL Google Apps Script Web App<input id="scriptUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec"></label><div class="form-actions"><button id="saveSyncBtn" class="btn primary">Simpan URL</button><button id="testSyncBtn" class="btn outline">Uji koneksi</button></div><p class="tiny muted">Gunakan URL Web App Apps Script yang telah diperbarui. Akun Google petugas harus terdaftar pada ALLOWED_EMAILS dan memiliki akses Editor ke spreadsheet.</p></div>
+          <div class="notice warning"><strong>Catatan keamanan:</strong> Jangan publikasikan spreadsheet atau endpoint untuk umum. Data NIK, alamat, nomor telepon, dan data anak harus hanya dapat diakses petugas berwenang. Gunakan deployment Apps Script yang mewajibkan login Google dan daftar email petugas yang diizinkan.</div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <div class="page-title"><div><h1>Pengaturan</h1><p>Identitas sekolah, akun, dan pengelolaan data lokal.</p></div></div>
+          <div class="panel"><h2>Identitas aplikasi</h2><div class="form-grid"><label>Nama sekolah<input id="schoolName" value="SMK Yadika Manado"></label><label>Tahun pelajaran<input id="schoolYear" value="2027/2028"></label><label class="span-2">Slogan<input id="schoolSlogan" value="Disiplin Nafasku Prestasi Tujuanku"></label></div><button class="btn primary" id="saveSchoolBtn">Simpan identitas</button></div>
+          <div class="panel"><h2>Pengelolaan akun</h2><p class="muted">Ubah password akun yang sedang digunakan.</p><div class="form-grid"><label>Password saat ini<input id="oldPassword" type="password"></label><label>Password baru<input id="newPassword" type="password"></label></div><button class="btn outline" id="changePasswordBtn">Ubah password</button><p id="passwordMessage" class="tiny"></p></div>
+          <div class="panel"><h2>Backup dan pemulihan</h2><p class="muted">Buat salinan data lokal atau pulihkan dari file backup JSON. Simpan backup di tempat aman.</p><div class="form-actions"><button class="btn outline" id="backupBtn">Unduh Backup JSON</button><label class="btn outline file-button">Pulihkan Backup JSON<input id="restoreInput" type="file" accept="application/json"></label><button class="btn danger" id="deleteAllBtn">Hapus seluruh data lokal</button></div></div>
+        </section>
+
+        <section class="page" id="page-guide">
+          <div class="page-title"><div><h1>Panduan Penggunaan</h1><p>Langkah ringkas untuk administrator dan petugas.</p></div></div>
+          <div class="panel guide"><h2>1. Memulai aplikasi</h2><ol><li>Jalankan aplikasi melalui alamat HTTPS atau localhost.</li><li>Pada penggunaan pertama, buat username dan password administrator.</li><li>Login dan buka menu Pengaturan untuk memeriksa identitas sekolah.</li></ol><h2>2. Pendaftaran offline</h2><ol><li>Buka menu Pendaftaran.</li><li>Isi data calon peserta didik dan pilih program keahlian.</li><li>Tekan Simpan Pendaftaran. Data tersimpan pada perangkat yang digunakan.</li></ol><h2>3. Pendaftaran online</h2><ol><li>Calon peserta didik mengisi Google Form resmi.</li><li>Pastikan Form sudah terhubung ke Google Sheets.</li><li>Atur Apps Script sesuai petunjuk pada README-PANDUAN.txt (tanpa token integrasi).</li><li>Jalankan sinkronisasi untuk menarik data online ke perangkat.</li></ol><h2>4. Sinkronisasi otomatis</h2><p>Aplikasi mengirim antrean pendaftaran offline ke tab Pendaftaran Offline dan menarik respons Google Form saat sinkronisasi. Data yang belum terkirim tetap tersimpan lokal.</p><h2>5. Backup</h2><p>Unduh backup JSON secara berkala dan simpan di lokasi aman. Backup berisi data pribadi calon peserta didik, jadi jangan mengirimkannya ke grup publik.</p><h2>6. Keterbatasan penting</h2><ul><li>Data lokal di HP dan komputer berbeda sampai berhasil disinkronkan.</li><li>Service Worker/PWA memerlukan HTTPS atau localhost. Membuka index.html langsung tidak mengaktifkan seluruh fitur PWA.</li><li>Login lokal pada aplikasi statis bukan pengganti sistem keamanan server untuk data berisiko tinggi.</li></ul></div>
+        </section>
+      </div>
+      <footer class="footer">SMK YADIKA MANADO · SPMB 2027/2028 <span>Dibuat oleh Jovano Kakalang, S.Ak.</span></footer>
+    </main>
+  </section>
+  <div id="toast" class="toast" role="status"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
