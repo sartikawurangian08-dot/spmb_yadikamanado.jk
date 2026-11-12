@@ -1,0 +1,10 @@
+{
+  "name": "SPMB SMK Yadika Manado 2027/2028",
+  "short_name": "SPMB Yadika",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#071d45",
+  "theme_color": "#071d45",
+  "description": "Sistem Penerimaan Murid Baru SMK Yadika Manado",
+  "icons": []
+}
